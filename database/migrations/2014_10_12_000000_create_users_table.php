@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('google_id')->unique()->nullable();
             $table->string('avatar')->nullable();
             $table->string('slug', 60)->nullable();
+            $table->text('remember_token')->nullable();
 
             $table->boolean('confirmed')->default(0);
             $table->boolean('is_online')->default(false);
