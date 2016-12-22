@@ -11,24 +11,37 @@
 |
  */
 
-// class User extends Illuminate\Database\Eloquent\Model
-// {
-
-// }
-
-function rest($path, $controller)
-{
-    global $app;
-
-    $app->get($path, $controller . '@index');
-    $app->get($path . '/{id}', $controller . '@show');
-    $app->post($path, $controller . '@store');
-    $app->put($path . '/{id}', $controller . '@update');
-    $app->delete($path . '/{id}', $controller . '@destroy');
-}
-
-rest('/user', 'UserController');
-
 $app->get('/', function () use ($app) {
     return $app->version();
 });
+
+// function rest($path, $controller)
+// {
+//     global $app;
+
+//     $app->get($path, $controller . '@index');
+//     $app->get($path . '/{id}', $controller . '@show');
+//     $app->post($path, $controller . '@store');
+//     $app->put($path . '/{id}', $controller . '@update');
+//     $app->delete($path . '/{id}', $controller . '@destroy');
+// }
+
+$app->group(['middleware' => 'auth:api'], function () use ($app) {
+    //rest('/user', 'UserController');
+    //rest('/venue', 'VenueController');
+    $app->get('/test', function () {
+        return 'authenticated';
+    });
+});
+
+// $app->group([
+//     'prefix'     => 'restricted',
+//     'middleware' => 'auth:api',
+// ], function use $app () {
+
+//     // Authentication Routes...
+//     $app->get('logout', 'Auth\LoginController@logout');
+
+//     $app->
+//     });
+// });

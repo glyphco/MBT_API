@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 trait RestControllerTrait
 {
@@ -24,12 +25,12 @@ trait RestControllerTrait
         $m = self::MODEL;
         try
         {
-            $v = \Validator::make($request->all(), $this->validationRules);
+            $v = \Illuminate\Support\Facades\Validator::make($request->all(), $this->validationRules);
 
             if ($v->fails()) {
                 throw new \Exception("ValidationException");
             }
-            $data = $m::create(\Request::all());
+            $data = $m::create($request->all());
             return $this->createdResponse($data);
         } catch (\Exception $ex) {
             $data = ['form_validations' => $v->errors(), 'exception' => $ex->getMessage()];
@@ -48,12 +49,12 @@ trait RestControllerTrait
 
         try
         {
-            $v = \Validator::make(\Request::all(), $this->validationRules);
+            $v = \Illuminate\Support\Facades\Validator::make(Illuminate\Http\Request::all(), $this->validationRules);
 
             if ($v->fails()) {
                 throw new \Exception("ValidationException");
             }
-            $data->fill(\Request::all());
+            $data->fill(\Illuminate\Http\Request::all());
             $data->save();
             return $this->showResponse($data);
         } catch (\Exception $ex) {
