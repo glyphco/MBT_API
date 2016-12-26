@@ -12,26 +12,34 @@
  */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+	return $app->version();
 });
 
-// function rest($path, $controller)
-// {
-//     global $app;
+function rest($path, $controller) {
+	global $app;
 
-//     $app->get($path, $controller . '@index');
-//     $app->get($path . '/{id}', $controller . '@show');
-//     $app->post($path, $controller . '@store');
-//     $app->put($path . '/{id}', $controller . '@update');
-//     $app->delete($path . '/{id}', $controller . '@destroy');
-// }
+	$app->get($path, $controller . '@index');
+	$app->get($path . '/{id}', $controller . '@show');
+	$app->post($path, $controller . '@store');
+	$app->put($path . '/{id}', $controller . '@update');
+	$app->delete($path . '/{id}', $controller . '@destroy');
+}
 
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
-    //rest('/user', 'UserController');
-    //rest('/venue', 'VenueController');
-    $app->get('/test', function () {
-        return 'authenticated';
-    });
+	rest('/user', 'UserController');
+	rest('/venue', 'VenueController');
+
+	$app->get('/role', 'RoleController@index');
+	$app->get('/role{$id}', 'RoleController@show');
+
+	$app->get('/test', function () use ($app) {
+		return 'authenticated';
+	});
+
+	$app->get('/testuser', function () use ($app) {
+		return \Auth::user()->toArray();
+	});
+
 });
 
 // $app->group([

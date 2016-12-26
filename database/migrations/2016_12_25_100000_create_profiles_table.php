@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVenuesTable extends Migration {
+class CreateProfilesTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *
@@ -27,6 +27,10 @@ class CreateVenuesTable extends Migration {
 			$table->string('lng');
 			$table->string('phone');
 			$table->string('email');
+			$table->boolean('bookable')->default(0);
+			$table->boolean('production')->default(0);
+			$table->boolean('hasmembers')->default(0);
+			$table->boolean('canbeamember')->default(0);
 
 			$table->timestamps();
 			$table->unsignedInteger('created_by')->nullable()->default(null);

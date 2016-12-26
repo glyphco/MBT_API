@@ -9,8 +9,7 @@ class VenueController extends APIController {
 		'name' => 'required',
 		'category' => 'required',
 		'street_address' => 'required',
-		'city' => 'required',
-		'state' => 'required',
+		'city_state' => 'required',
 		'zipcode' => 'required',
 	];
 
