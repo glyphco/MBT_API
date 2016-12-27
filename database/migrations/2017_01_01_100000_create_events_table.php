@@ -19,6 +19,9 @@ class CreateEventsTable extends Migration {
 			$table->dateTime('start');
 			$table->dateTime('end')->nullable()->default(null);
 			$table->boolean('public')->default(0);
+			$table->boolean('confirmed')->default(0);
+			$table->boolean('is_online')->default(false);
+			$table->boolean('is_banned')->default(false);
 			$table->timestamps();
 			$table->unsignedInteger('created_by')->nullable()->default(null);
 			$table->unsignedInteger('updated_by')->nullable()->default(null);
