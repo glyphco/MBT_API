@@ -3,9 +3,9 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
+	(new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
-    //
+	//
 }
 
 /*
@@ -20,7 +20,7 @@ try {
  */
 
 $app = new Laravel\Lumen\Application(
-    realpath(__DIR__ . '/../')
+	realpath(__DIR__ . '/../')
 );
 
 $app->withFacades();
@@ -39,13 +39,13 @@ $app->withEloquent();
  */
 
 $app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+	Illuminate\Contracts\Debug\ExceptionHandler::class,
+	App\Exceptions\Handler::class
 );
 
 $app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
+	Illuminate\Contracts\Console\Kernel::class,
+	App\Console\Kernel::class
 );
 
 /*
@@ -64,14 +64,17 @@ $app->singleton(
 // ]);
 
 $app->middleware([
-    Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-    //Tymon\JWTAuth\Middleware\RefreshToken::class,
+	Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+	//Tymon\JWTAuth\Middleware\RefreshToken::class,
+
 ]);
 
 $app->routeMiddleware([
-    //'auth' => App\Http\Middleware\Authenticate::class,
-    'auth' => '\Tymon\JWTAuth\Http\Middleware\Authenticate',
-    //'jwt.refresh' => '\Tymon\JWTAuth\Http\Middleware\RefreshToken',
+	//'auth' => App\Http\Middleware\Authenticate::class,
+	'auth' => '\Tymon\JWTAuth\Http\Middleware\Authenticate',
+	//'jwt.refresh' => '\Tymon\JWTAuth\Http\Middleware\RefreshToken',
+	//'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
+	'can' => '\Illuminate\Auth\Middleware\Authorize',
 ]);
 
 /*
@@ -87,7 +90,6 @@ $app->routeMiddleware([
 
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -101,7 +103,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
  */
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-    require __DIR__ . '/../app/Http/routes.php';
+	require __DIR__ . '/../app/Http/routes.php';
 });
 
 return $app;

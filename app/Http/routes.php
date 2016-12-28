@@ -26,20 +26,70 @@ function rest($path, $controller) {
 }
 
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
-	rest('/user', 'UserController');
+
+//superadmin only
+	$app->group(['middleware' => 'can:delete-users'], function () use ($app) {
+		rest('/user', 'UserController');
+	});
+
+//admin only
+	$app->group(['middleware' => 'can:create-events'], function () use ($app) {
+		rest('/event', 'EventController');
+	});
+
+	//rest('/user', 'UserController');
+
+//contribute only
 	rest('/venue', 'VenueController');
 
-	$app->get('/role', 'RoleController@index');
-	$app->get('/role{$id}', 'RoleController@show');
+//members only
+
+//guests
 
 	$app->get('/test', function () use ($app) {
-		return 'authenticated';
+		return \Auth::user()->getAbilities()->toArray();;
 	});
 
-	$app->get('/testuser', function () use ($app) {
-		return \Auth::user()->toArray();
+	$app->get('/runaccess', function () use ($app) {
+		//Bouncer::allow(\Auth::user())->to('ban-users');
+		//Bouncer::allow('admin')->to('ban-users');
+		//Bouncer::assign('admin')->to(\Auth::user());
+		Bouncer::allow('superadmin')->to('ban-users');
+		Bouncer::allow('superadmin')->to('create-events');
+		Bouncer::allow('superadmin')->to('edit-events');
+		Bouncer::allow('superadmin')->to('delete-events');
+		Bouncer::allow('superadmin')->to('create-profiles');
+		Bouncer::allow('superadmin')->to('edit-profiles');
+		Bouncer::allow('superadmin')->to('delete-profiles');
+
+		Bouncer::allow('admin')->to('create-events');
+		Bouncer::allow('admin')->to('edit-events');
+		Bouncer::allow('admin')->to('delete-events');
+		Bouncer::allow('admin')->to('create-profiles');
+		Bouncer::allow('admin')->to('edit-profiles');
+		Bouncer::allow('admin')->to('delete-profiles');
+
+		Bouncer::allow('mastereditor')->to('create-events');
+		Bouncer::allow('mastereditor')->to('edit-events');
+		Bouncer::allow('mastereditor')->to('delete-events');
+		Bouncer::allow('mastereditor')->to('create-profiles');
+		Bouncer::allow('mastereditor')->to('edit-profiles');
+		Bouncer::allow('mastereditor')->to('delete-profiles');
+
+		return 'roles seeded';
 	});
 
+	$app->get('/backstageaccess', function () use ($app) {
+		//Bouncer::allow(\Auth::user())->to('ban-users');
+		//Bouncer::allow('admin')->to('ban-users');
+		Bouncer::assign('mastereditor')->to(\Auth::user());
+		return \Auth::user()->getAbilities()->toArray();
+	});
+
+	$app->get('/giveglypheradmin', function () use ($app) {
+		Bouncer::assign('superadmin')->to(\Auth::user());
+		return \Auth::user()->getAbilities()->toArray();
+	});
 });
 
 // $app->group([

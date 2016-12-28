@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,6 +12,9 @@ class CreateRolesTable extends Migration {
 	 * @return void
 	 */
 	public function up() {
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		Schema::dropIfExists('roles');
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 		Schema::create('roles', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('name')->unique();

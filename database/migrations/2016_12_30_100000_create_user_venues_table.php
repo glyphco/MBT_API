@@ -25,7 +25,7 @@ class CreateUserVenuesTable extends Migration {
 
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->foreign('venue_id')->references('id')->on('venues')->onDelete('cascade');
-			$table->foreign('objectrole_id')->references('id')->on('objectroles')->onDelete('cascade');
+//			$table->foreign('objectrole_id')->references('id')->on('objectroles')->onDelete('cascade');
 
 		});
 

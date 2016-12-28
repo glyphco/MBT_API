@@ -9,7 +9,8 @@
         "laravel/lumen-framework": "5.3.*",
         "vlucas/phpdotenv": "~2.2",
         "wildside/userstamps": "^0.2.0",
-        "tymon/jwt-auth": "1.0.0-alpha.3"
+        "tymon/jwt-auth": "1.0.0-alpha.3",
+        "silber/bouncer": "1.0.0-beta.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

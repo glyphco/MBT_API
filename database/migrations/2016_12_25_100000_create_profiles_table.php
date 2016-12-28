@@ -27,7 +27,7 @@ class CreateProfilesTable extends Migration {
 			$table->string('lng');
 			$table->string('phone');
 			$table->string('email');
-			$table->boolean('bookable')->default(0);
+			$table->boolean('performer')->default(0);
 			$table->boolean('production')->default(0);
 			$table->boolean('hasmembers')->default(0);
 			$table->boolean('canbeamember')->default(0);

@@ -12,12 +12,14 @@ class Event extends Model {
 	 */
 	protected $fillable = [
 		'name',
-		'name',
-		'location',
+		'venue',
+		'venue_info',
+		'venue_id',
 		'description',
 		'start',
 		'end',
 		'public',
+		'confirmed',
 	];
 
 	/**

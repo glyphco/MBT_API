@@ -7,7 +7,7 @@ class EventController extends APIController {
 	const MODEL = 'App\Models\Event';
 	protected $validationRules = [
 		'name' => 'required',
-		'location' => 'required',
+		'venue' => 'required',
 		'start' => 'required',
 	];
 
