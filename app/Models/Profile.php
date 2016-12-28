@@ -18,7 +18,7 @@ class Profile extends Model {
 		'city_state',
 		'zipcode',
 		'phone',
-		'bookable',
+		'performer',
 		'production',
 		'hasmembers',
 		'canbeamember',
