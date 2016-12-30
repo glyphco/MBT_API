@@ -38,7 +38,7 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
         rest('/event', 'EventController');
     });
 
-    //rest('/user', 'UserController');
+//rest('/user', 'UserController');
 
 //contribute only
     rest('/venue', 'VenueController');
@@ -96,6 +96,7 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
             return 'nice try dickwad.';
         }
     });
+
 });
 
 // $app->group([
