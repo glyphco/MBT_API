@@ -15,6 +15,10 @@ $app->get('/', function () use ($app) {
 	return $app->version();
 });
 
+$app->get('/foo', function () use ($app) {
+	return 'bar';
+});
+
 $app->get('map', 'ItemController@map');
 
 function rest($path, $controller) {
