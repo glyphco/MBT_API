@@ -14,4 +14,15 @@ class VenueController extends APIController {
 		'zipcode' => 'required',
 	];
 
+	public function map() {
+
+		$venues = Venue::all();
+		//$items = Item::distance(0.1,'45.05,7.6667')->get();
+
+		dd($venues);
+
+		return view('items.map')->with(['items' => $items]);
+
+	}
+
 }

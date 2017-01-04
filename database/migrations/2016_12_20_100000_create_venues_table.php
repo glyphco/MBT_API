@@ -23,8 +23,10 @@ class CreateVenuesTable extends Migration {
 			$table->string('city');
 			$table->string('state');
 			$table->string('zipcode');
-			$table->string('lat');
-			$table->string('lng');
+
+			$table->decimal('lat', 10, 8);
+			$table->decimal('lng', 11, 8);
+
 			$table->string('phone');
 			$table->string('email');
 
@@ -33,6 +35,10 @@ class CreateVenuesTable extends Migration {
 			$table->unsignedInteger('updated_by')->nullable()->default(null);
 
 		});
+
+		/*Espatial Column*/
+		DB::statement('ALTER TABLE venues ADD location POINT');
+
 	}
 
 	/**

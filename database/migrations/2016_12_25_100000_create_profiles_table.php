@@ -12,9 +12,9 @@ class CreateProfilesTable extends Migration {
 	 */
 	public function up() {
 		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-		Schema::dropIfExists('venues');
+		Schema::dropIfExists('profiles');
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-		Schema::create('venues', function (Blueprint $table) {
+		Schema::create('profiles', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('slug', 60);
@@ -46,7 +46,7 @@ class CreateProfilesTable extends Migration {
 	 */
 	public function down() {
 		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-		Schema::dropIfExists('venues');
+		Schema::dropIfExists('profiles');
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 	}
 }
