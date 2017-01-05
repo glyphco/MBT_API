@@ -16,27 +16,31 @@ class CreateProfilesTable extends Migration {
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 		Schema::create('profiles', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name');
-			$table->string('slug', 60);
-			$table->string('category');
-			$table->string('street_address');
-			$table->string('city');
-			$table->string('state');
-			$table->string('zipcode');
-			$table->string('lat');
-			$table->string('lng');
-			$table->string('phone');
-			$table->string('email');
+			$table->string('name', 60);
+			$table->string('slug', 60)->nullable()->default(null);
+			$table->string('category')->nullable()->default(null);
+			$table->string('street_address')->nullable()->default(null);
+			$table->string('city')->nullable()->default(null);
+			$table->string('state')->nullable()->default(null);
+			$table->string('zipcode')->nullable()->default(null);
+			$table->string('lat')->nullable()->default(null);
+			$table->string('lng')->nullable()->default(null);
+			$table->string('phone')->nullable()->default(null);
+			$table->string('email')->nullable()->default(null);
 			$table->boolean('performer')->default(0);
 			$table->boolean('production')->default(0);
-			$table->boolean('hasmembers')->default(0);
+			$table->boolean('canhavemembers')->default(0);
 			$table->boolean('canbeamember')->default(0);
+			$table->boolean('public')->default(0);
+			$table->boolean('confirmed')->default(0);
 
 			$table->timestamps();
 			$table->unsignedInteger('created_by')->nullable()->default(null);
 			$table->unsignedInteger('updated_by')->nullable()->default(null);
 
 		});
+		/*Spatial Column*/
+		DB::statement('ALTER TABLE profiles ADD location POINT');
 	}
 
 	/**

@@ -16,6 +16,12 @@ class CreateEventsTable extends Migration {
 			$table->string('name');
 			$table->integer('venue_id')->unsigned()->nullable();
 			$table->string('venue');
+			$table->string('street_address');
+			$table->string('city');
+			$table->string('state');
+			$table->string('zipcode');
+			$table->decimal('lat', 10, 8);
+			$table->decimal('lng', 11, 8);
 			$table->string('venue_info');
 			$table->text('description')->nullable()->default(null);
 			$table->dateTime('start');
@@ -28,7 +34,8 @@ class CreateEventsTable extends Migration {
 
 			$table->foreign('venue_id')->references('id')->on('venues')->onUpdate('cascade')->onDelete('set null');
 		});
-
+		/*Spatial Column*/
+		DB::statement('ALTER TABLE events ADD location POINT');
 	}
 
 	/**

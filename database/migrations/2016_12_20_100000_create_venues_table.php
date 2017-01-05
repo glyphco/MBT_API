@@ -39,7 +39,7 @@ class CreateVenuesTable extends Migration {
 
 		});
 
-		/*Espatial Column*/
+		/*Spatial Column*/
 		DB::statement('ALTER TABLE venues ADD location POINT');
 
 	}

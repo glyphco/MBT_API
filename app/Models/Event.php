@@ -1,10 +1,12 @@
-<?php namespace App\Models;
+<?php
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
 class Event extends Model {
 	use Userstamps;
+	use \App\Traits\SpacialdataTrait;
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -13,6 +15,13 @@ class Event extends Model {
 	protected $fillable = [
 		'name',
 		'venue',
+		'street_address',
+		'city',
+		'state',
+		'zipcode',
+		'lat',
+		'lon',
+		'location',
 		'venue_info',
 		'venue_id',
 		'description',

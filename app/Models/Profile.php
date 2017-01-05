@@ -1,10 +1,12 @@
-<?php namespace App\Models;
+<?php
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
 class Profile extends Model {
 	use Userstamps;
+	use \App\Traits\SpacialdataTrait;
 	/**
 	 * The attributes that are mass assignable.
 	 *
@@ -12,16 +14,23 @@ class Profile extends Model {
 	 */
 	protected $fillable = [
 		'name',
+		'email',
 		'slug',
 		'category',
 		'street_address',
-		'city_state',
+		'city',
+		'state',
 		'zipcode',
+		'lat',
+		'lng',
 		'phone',
+		'location',
 		'performer',
 		'production',
-		'hasmembers',
+		'canhavemembers',
 		'canbeamember',
+		'public',
+		'confirmed',
 	];
 
 	/**
