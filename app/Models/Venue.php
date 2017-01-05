@@ -46,4 +46,19 @@ class Venue extends Model {
 		static::addGlobalScope(new \App\Scopes\PublicScope);
 		static::addGlobalScope(new \App\Scopes\ConfirmedScope);
 	}
+
+	public function scopePrivate($query) {
+		return $query->withoutGlobalScope(PublicScope::class)->where('public', '=', 0);
+	}
+	public function scopePublicAndPrivate($query) {
+		return $query->withoutGlobalScope(PublicScope::class);
+	}
+
+	public function scopeUnconfirmed($query) {
+		return $query->withoutGlobalScope(ConfirmedScope::class)->where('confirmed', '=', 0);
+	}
+	public function scopeConfirmedAndUnconfirmed($query) {
+		return $query->withoutGlobalScope(ConfirmedScope::class);
+	}
+
 }
