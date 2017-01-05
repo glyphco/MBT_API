@@ -3,29 +3,33 @@ namespace App\Http\Controllers;
 
 use App\Traits\APIResponderTrait;
 use App\Traits\RestControllerTrait;
+use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class VenueController extends BaseController {
 	use RestControllerTrait;
 	use APIResponderTrait;
-	const MODEL                = 'App\Models\Venue';
+	const MODEL = 'App\Models\Venue';
 	protected $validationRules = [
-		'name'           => 'required',
-		'category'       => 'required',
+		'name' => 'required',
+		'category' => 'required',
 		'street_address' => 'required',
-		'city'           => 'required',
-		'state'          => 'required',
-		'zipcode'        => 'required',
+		'city' => 'required',
+		'state' => 'required',
+		'zipcode' => 'required',
 	];
 
-	public function map() {
+	public function map(Request $request) {
+		$location = $request->input('l', '41.291824,-87.763978');
+		$distanceinmeters = $request->input('d', 100000); //(in meters)
+		$distanceindegrees = $distanceinmeters / 111195; //(degrees (approx))
 
-		$venues = Venue::all();
-		//$items = Item::distance(0.1,'45.05,7.6667')->get();
+		$m = self::MODEL;
+		//$data = $m::pluck('name', 'location');
+		$data = $m::distance($distanceindegrees, $location)->get();
+		//$data = $m::distance($distanceindegrees, $location)->pluck('name', 'location');
 
-		dd($venues);
-
-		return view('items.map')->with(['items' => $items]);
+		return $this->listResponse($data);
 
 	}
 

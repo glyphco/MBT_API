@@ -17,7 +17,8 @@ trait SpacialDataTrait {
 		$loc = substr($value, 6);
 		$loc = preg_replace('/[ ,]+/', ',', $loc, 1);
 
-		return substr($loc, 0, -1);
+		return 'nope';
+		//return substr($loc, 0, -1);
 	}
 
 	public function newQuery($excludeDeleted = true) {

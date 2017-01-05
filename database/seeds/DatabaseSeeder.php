@@ -29,18 +29,18 @@ class DatabaseSeeder extends Seeder {
 class UserDataSeeder extends Seeder {
 	public function run() {
 		DB::table('users')->delete();
-		$datetime    = Carbon::now();
+		$datetime = Carbon::now();
 		$glypherinfo = [
-			'name'        => "Shawn 'glypher' Dalton",
-			'email'       => "glypher@gmail.com",
+			'name' => "Shawn 'glypher' Dalton",
+			'email' => "glypher@gmail.com",
 			'facebook_id' => '10109892803653991',
-			'avatar'      => 'https://graph.facebook.com/v2.8/10109892803653991/picture?type=normal',
-			'slug'        => 'shawn',
-			'created_at'  => $datetime,
-			'updated_at'  => $datetime,
+			'avatar' => 'https://graph.facebook.com/v2.8/10109892803653991/picture?type=normal',
+			'slug' => 'shawn',
+			'created_at' => $datetime,
+			'updated_at' => $datetime,
 		];
 
-		$id   = DB::table('users')->insertGetId($glypherinfo);
+		$id = DB::table('users')->insertGetId($glypherinfo);
 		$user = User::find($id);
 		//Logging in glypher so we can do all the seeding
 		\Auth::login($user);
@@ -53,7 +53,7 @@ class UserDataSeeder extends Seeder {
 class VenueDataSeeder extends Seeder {
 	public function run() {
 		DB::table('venues')->delete();
-		$venues = factory(App\Models\Venue::class, 10)->create();
+		$venues = factory('App\Models\Venue', 10)->states('chicago')->create();
 	}
 }
 

@@ -35,4 +35,15 @@ class Venue extends Model {
 	 */
 	protected $hidden = [
 	];
+
+	/**
+	 * The "booting" method of the model.
+	 *
+	 * @return void
+	 */
+	protected static function boot() {
+		parent::boot();
+		static::addGlobalScope(new \App\Scopes\PublicScope);
+		static::addGlobalScope(new \App\Scopes\ConfirmedScope);
+	}
 }

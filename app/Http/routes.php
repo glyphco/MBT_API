@@ -19,7 +19,7 @@ $app->get('/foo', function () use ($app) {
 	return 'bar';
 });
 
-$app->get('map', 'ItemController@map');
+$app->get('/venue/map', 'VenueController@map');
 
 function rest($path, $controller) {
 	global $app;
