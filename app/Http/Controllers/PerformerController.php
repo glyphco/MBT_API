@@ -1,10 +1,14 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\APIController as APIController;
+use App\Traits\APIResponderTrait;
+use App\Traits\RestControllerTrait;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class EventController extends APIController {
+class EventController extends BaseController {
 	use RestControllerTrait;
-	const MODEL = 'App\Models\Event';
+	use APIResponderTrait;
+	const MODEL                = 'App\Models\Event';
 	protected $validationRules = [
 		'name',
 	];

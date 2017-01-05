@@ -17,7 +17,7 @@ class CreateVenuesTable extends Migration {
 		Schema::create('venues', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
-			$table->string('slug', 60);
+			$table->string('slug', 60)->nullable();
 			$table->string('category');
 			$table->string('street_address');
 			$table->string('city');
@@ -29,6 +29,9 @@ class CreateVenuesTable extends Migration {
 
 			$table->string('phone');
 			$table->string('email');
+
+			$table->boolean('public')->default(0);
+			$table->boolean('confirmed')->default(0);
 
 			$table->timestamps();
 			$table->unsignedInteger('created_by')->nullable()->default(null);

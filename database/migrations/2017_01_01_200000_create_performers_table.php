@@ -15,11 +15,17 @@ class CreatePerformersTable extends Migration {
 			$table->increments('id');
 			$table->integer('event_id')->unsigned();
 			$table->string('name');
-			$table->string('performer_info');
+			$table->string('info');
+			$table->string('private_info');
 			$table->integer('profile_id')->unsigned()->nullable();
+
 			$table->dateTime('start')->nullable()->default(null);
 			$table->dateTime('end')->nullable()->default(null);
 			$table->integer('order')->unsigned()->default(0);
+
+			$table->boolean('public')->default(0);
+			$table->boolean('confirmed')->default(0);
+
 			$table->timestamps();
 			$table->unsignedInteger('created_by')->nullable()->default(null);
 			$table->unsignedInteger('updated_by')->nullable()->default(null);

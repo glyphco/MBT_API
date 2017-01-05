@@ -1,10 +1,14 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\APIController as APIController;
+use App\Traits\APIResponderTrait;
+use App\Traits\RestControllerTrait;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class UserController extends APIController {
+class UserController extends BaseController {
 	use RestControllerTrait;
-	const MODEL = 'App\Models\User';
+	use APIResponderTrait;
+	const MODEL                = 'App\Models\User';
 	protected $validationRules = ['email' => 'required', 'name' => 'required', 'password' => 'required'];
 
 //Eventually lockdown the user model and remove the "REST" controller trait.

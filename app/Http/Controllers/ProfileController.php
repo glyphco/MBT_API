@@ -1,16 +1,20 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\APIController as APIController;
+use App\Traits\APIResponderTrait;
+use App\Traits\RestControllerTrait;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class ProfileController extends APIController {
+class ProfileController extends BaseController {
 	use RestControllerTrait;
-	const MODEL = 'App\Models\Profile';
+	use APIResponderTrait;
+	const MODEL                = 'App\Models\Profile';
 	protected $validationRules = [
-		'name' => 'required',
+		'name'     => 'required',
 		'category' => 'required',
-		'city' => 'required',
-		'state' => 'required',
-		'zipcode' => 'required',
+		'city'     => 'required',
+		'state'    => 'required',
+		'zipcode'  => 'required',
 
 	];
 

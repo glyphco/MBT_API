@@ -47,8 +47,8 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
 //contribute only
 	rest('/venue', 'VenueController');
-
-//members only
+	rest('/performer', 'PerformerController'); //connect profiles to events
+	//members only
 
 //guests
 
@@ -100,7 +100,7 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 	});
 
 	$app->get('/giveglypheradmin', function () use ($app) {
-		if (\Auth::user()->facebook_id == 10109892803653991) {
+		if (\Auth::user()->facebook_id == env('glyph_facebook', 0)) {
 			Bouncer::assign('superadmin')->to(\Auth::user());
 			return \Auth::user()->getAbilities()->toArray();
 		} else {

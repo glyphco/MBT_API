@@ -1,6 +1,7 @@
 <?php
-
 use App\Models\Item;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
@@ -14,18 +15,55 @@ class DatabaseSeeder extends Seeder {
 	public function run() {
 		Model::unguard();
 
+		// Temporarily increase memory limit to 2048M
+		//ini_set('memory_limit', '2048M');
+
 		$this->call('ItemDataSeeder');
+		$this->call('UserDataSeeder');
+
+		$this->call('VenueDataSeeder');
 	}
 
+}
+
+class UserDataSeeder extends Seeder {
+	public function run() {
+		DB::table('users')->delete();
+		$datetime    = Carbon::now();
+		$glypherinfo = [
+			'name'        => "Shawn 'glypher' Dalton",
+			'email'       => "glypher@gmail.com",
+			'facebook_id' => '10109892803653991',
+			'avatar'      => 'https://graph.facebook.com/v2.8/10109892803653991/picture?type=normal',
+			'slug'        => 'shawn',
+			'created_at'  => $datetime,
+			'updated_at'  => $datetime,
+		];
+
+		$id   = DB::table('users')->insertGetId($glypherinfo);
+		$user = User::find($id);
+		//Logging in glypher so we can do all the seeding
+		\Auth::login($user);
+
+		$users = factory('App\Models\User', 'user', 100)->create();
+
+	}
+}
+
+class VenueDataSeeder extends Seeder {
+	public function run() {
+		DB::table('venues')->delete();
+		$venues = factory(App\Models\Venue::class, 10)->create();
+	}
 }
 
 class ItemDataSeeder extends Seeder {
 
 	public function run() {
-		DB::table('items')->delete();
+		DB::table('items')->truncate();
 
 		Item::create(array('title' => 'Agliè', 'location' => '45.3681,7.7681'));
-		Item::create(array('title' => 'Airasca', 'location' => '44.9181,7.4855'));
+		Item::create(array('title' => 'Airasca'));
 		Item::create(array('title' => '"Ala di Stura"', 'location' => '45.3154,7.3026'));
 		Item::create(array('title' => '"Albiano dIvrea"', 'location' => '45.4339,7.9517'));
 		Item::create(array('title' => '"Alice Superiore"', 'location' => '45.4599,7.7774'));

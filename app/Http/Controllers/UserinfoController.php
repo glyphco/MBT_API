@@ -1,11 +1,14 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\APIController as APIController;
+use App\Traits\APIResponderTrait;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class UserinfoController extends APIController {
+class UserinfoController extends BaseController {
 
+	use APIResponderTrait;
 	public function userinfo() {
-		$data = $this->getUser();
+		$data               = $this->getUser();
 		$data['attributes'] = $this->getAttributes();
 		return $this->showResponse($data);
 	}

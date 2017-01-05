@@ -1,4 +1,5 @@
-<?php namespace App\Models;
+<?php
+namespace App\Models;
 
 use App\Traits\SpacialdataTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -17,9 +18,14 @@ class Venue extends Model {
 		'slug',
 		'category',
 		'street_address',
-		'city_state',
+		'city',
+		'state',
 		'zipcode',
+		'lat',
+		'lng',
 		'phone',
+		'email',
+		'location',
 	];
 
 	/**

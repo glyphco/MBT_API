@@ -1,4 +1,5 @@
-<?php namespace App\Models;
+<?php
+namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -10,13 +11,14 @@ use Laravel\Lumen\Auth\Authorizable;
 //use Illuminate\Notifications\Notifiable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
-use Wildside\Userstamps\Userstamps;
+
+//use Wildside\Userstamps\Userstamps;
 
 class User extends Model implements
 AuthenticatableContract,
 AuthenticatableUserContract,
 AuthorizableContract {
-	use Authenticatable, Authorizable, Userstamps, HasRolesAndAbilities;
+	use Authenticatable, Authorizable, HasRolesAndAbilities;
 	//use Notifiable;
 	/**
 	 * The attributes that are mass assignable.

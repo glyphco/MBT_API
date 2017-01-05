@@ -1,9 +1,10 @@
-<?php namespace App\Traits;
+<?php
+namespace App\Traits;
 use DB;
 
 // https://www.codetutorial.io/geo-spatial-mysql-laravel-5/
 
-trait SpacialdataTrait {
+trait SpacialDataTrait {
 
 	protected $geofields = ['location'];
 

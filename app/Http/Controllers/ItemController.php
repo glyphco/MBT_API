@@ -1,15 +1,20 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\APIController as APIController;
 use App\Models\Item;
+use App\Traits\APIResponderTrait;
+use Illuminate\Http\Request;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class ItemController extends APIController {
+class ItemController extends BaseController {
 
-	public function map() {
+	use APIResponderTrait;
+
+	public function map(Request $request) {
 
 		//$items = Item::all();
 
-		$distanceinmeters = 10000; //(meters)
+		$distanceinmeters  = $request->input('d', 10000); //(in meters)
 		$distanceindegrees = $distanceinmeters / 111195; //(degrees (approx))
 
 		$items = Item::distance($distanceindegrees, '45.05,7.6667')->get();
