@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler {
 	public function render($request, Exception $e) {
 		if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
 			$response = [
-				'code'    => 422,
+				'code'    => 403,
 				'status'  => 'error',
 				'data'    => 'Token Is Expired (Code#exception12)',
 				'message' => 'Unprocessable entity',
@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler {
 
 		if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
 			$response = [
-				'code'    => 422,
+				'code'    => 401,
 				'status'  => 'error',
 				'data'    => 'Token Is Invalid (Code#exception22)',
 				'message' => 'Unprocessable entity',
@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler {
 			if ($e->getMessage() == 'Token not provided') {
 				$message  = $e->getMessage();
 				$response = [
-					'code'    => 422,
+					'code'    => 401,
 					'status'  => 'error',
 					'data'    => 'Token Not Provided (Code#exception32)',
 					'message' => $message,
@@ -78,7 +78,7 @@ class Handler extends ExceptionHandler {
 		if ($e instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
 			$message  = $e->getMessage();
 			$response = [
-				'code'    => 422,
+				'code'    => 401,
 				'status'  => 'error',
 				'data'    => 'Must supply a valid token (Code#exception32)',
 				'message' => $message,

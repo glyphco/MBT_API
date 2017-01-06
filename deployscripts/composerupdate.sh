@@ -20,7 +20,7 @@ echo '---Self-Update Composer Complete---' >> $logfile 2>&1
 #---- 2/2 - Start Composer update----#
 cd $root >> $logfile 2>&1
 sudo composer update >> $logfile 2>&1
-php artisan migrate >> $logfile 2>&1
+php artisan migrate:refresh  >> $logfile 2>&1
 php artisan db:seed >> $logfile 2>&1
 echo '---Composer Update Complete---' >> $logfile 2>&1
 

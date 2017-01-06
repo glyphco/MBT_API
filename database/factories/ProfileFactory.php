@@ -23,7 +23,7 @@ $factory->define('App\Models\Profile', function (Faker\Generator $faker) {
 		'lng'            => $lng,
 		'phone'          => $faker->phoneNumber,
 		'location'       => DB::raw($lat . ', ' . $lng),
-		'performer'      => 1,
+		'participant'    => 1,
 		'production'     => 1,
 		'canhavemembers' => 1,
 		'canbeamember'   => 1,

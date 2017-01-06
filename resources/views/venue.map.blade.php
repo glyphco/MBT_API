@@ -1,6 +1,4 @@
 
-
-
 @extends('app')
 
 @section('content')
@@ -30,5 +28,5 @@
 
     </script>
 
-
+AIzaSyBRVje7gRNWDLDu0fBpuSPxMmr4wUrmikc
 @endsection

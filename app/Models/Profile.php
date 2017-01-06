@@ -25,7 +25,7 @@ class Profile extends Model {
 		'lng',
 		'phone',
 		'location',
-		'performer',
+		'participant',
 		'production',
 		'canhavemembers',
 		'canbeamember',
@@ -40,4 +40,9 @@ class Profile extends Model {
 	 */
 	protected $hidden = [
 	];
+
+	public function events() {
+		return $this->belongsToMany('App\Models\Event', 'participant', 'profile_id', 'event_id');
+	}
+
 }

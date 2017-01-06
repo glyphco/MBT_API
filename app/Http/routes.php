@@ -47,7 +47,7 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
 //contribute only
 	rest('/venue', 'VenueController');
-	rest('/performer', 'PerformerController'); //connect profiles to events
+	rest('/participant', 'ParticipantController'); //connect profiles to events
 	//members only
 
 //guests
@@ -67,27 +67,37 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 		//Bouncer::allow(\Auth::user())->to('ban-users');
 		//Bouncer::allow('admin')->to('ban-users');
 		//Bouncer::assign('admin')->to(\Auth::user());
+
 		Bouncer::allow('superadmin')->to('ban-users');
-		Bouncer::allow('superadmin')->to('create-events');
-		Bouncer::allow('superadmin')->to('edit-events');
-		Bouncer::allow('superadmin')->to('delete-events');
 		Bouncer::allow('superadmin')->to('create-profiles');
 		Bouncer::allow('superadmin')->to('edit-profiles');
 		Bouncer::allow('superadmin')->to('delete-profiles');
+		Bouncer::allow('superadmin')->to('create-venues');
+		Bouncer::allow('superadmin')->to('edit-venues');
+		Bouncer::allow('superadmin')->to('delete-venues');
+		Bouncer::allow('superadmin')->to('create-events');
+		Bouncer::allow('superadmin')->to('edit-events');
+		Bouncer::allow('superadmin')->to('delete-events');
 
-		Bouncer::allow('admin')->to('create-events');
-		Bouncer::allow('admin')->to('edit-events');
-		Bouncer::allow('admin')->to('delete-events');
 		Bouncer::allow('admin')->to('create-profiles');
 		Bouncer::allow('admin')->to('edit-profiles');
 		Bouncer::allow('admin')->to('delete-profiles');
+		Bouncer::allow('admin')->to('create-venues');
+		Bouncer::allow('admin')->to('edit-venues');
+		Bouncer::allow('admin')->to('delete-venues');
+		Bouncer::allow('admin')->to('create-events');
+		Bouncer::allow('admin')->to('edit-events');
+		Bouncer::allow('admin')->to('delete-events');
 
-		Bouncer::allow('mastereditor')->to('create-events');
-		Bouncer::allow('mastereditor')->to('edit-events');
-		Bouncer::allow('mastereditor')->to('delete-events');
 		Bouncer::allow('mastereditor')->to('create-profiles');
 		Bouncer::allow('mastereditor')->to('edit-profiles');
 		Bouncer::allow('mastereditor')->to('delete-profiles');
+		Bouncer::allow('mastereditor')->to('create-venues');
+		Bouncer::allow('mastereditor')->to('edit-venues');
+		Bouncer::allow('mastereditor')->to('delete-venues');
+		Bouncer::allow('mastereditor')->to('create-events');
+		Bouncer::allow('mastereditor')->to('edit-events');
+		Bouncer::allow('mastereditor')->to('delete-events');
 
 		return 'roles seeded';
 	});

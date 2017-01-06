@@ -1,9 +1,10 @@
-<?php namespace App\Models;
+<?php
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
-class Performer extends Model {
+class Participant extends Model {
 	use Userstamps;
 	/**
 	 * The attributes that are mass assignable.
@@ -11,8 +12,9 @@ class Performer extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
+		'event_id',
 		'name',
-		'performer_info',
+		'details',
 		'profile_id',
 		'start',
 		'end',
@@ -32,8 +34,13 @@ class Performer extends Model {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function venues() {
-		return $this->hasMany('App\Models\Venue');
+
+	public function event() {
+		return $this->belongsTo('App\Models\Event');
+	}
+
+	public function profile() {
+		return $this->belongsTo('App\Models\Profile');
 	}
 
 }
