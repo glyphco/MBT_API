@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7db59e4e32971684c273477ca4b9a49e",
+    "content-hash": "f68f5ce856c3d4c5e58739fa02546b4d",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -2402,20 +2402,11 @@
         },
         {
             "name": "wildside/userstamps",
-            "version": "0.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/WildSideUK/Laravel-Userstamps.git",
-                "reference": "77eebb698ecfe06d2f6dad2d71d449fc69c74cb1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WildSideUK/Laravel-Userstamps/zipball/77eebb698ecfe06d2f6dad2d71d449fc69c74cb1",
-                "reference": "77eebb698ecfe06d2f6dad2d71d449fc69c74cb1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
+                "url": "git://github.com/glyphco/Laravel-Userstamps.git",
+                "reference": "master"
             },
             "type": "library",
             "autoload": {
@@ -2423,27 +2414,7 @@
                     "Wildside\\Userstamps\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "WildSide",
-                    "email": "hello@wildside.uk",
-                    "homepage": "https://wildside.uk"
-                }
-            ],
-            "description": "Eloquent trait to automatically maintain created_by and updated_by (and deleted_by when using SoftDeletes) on your models",
-            "keywords": [
-                "created_by",
-                "deleted_by",
-                "eloquent",
-                "laravel",
-                "updated_by",
-                "userstamps"
-            ],
-            "time": "2016-12-02T16:54:19+00:00"
+            "time": "2017-01-06 20:02:35"
         }
     ],
     "packages-dev": [
@@ -3916,7 +3887,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "wildside/userstamps": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

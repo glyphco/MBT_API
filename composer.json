@@ -8,9 +8,9 @@
         "php": ">=5.6.4",
         "laravel/lumen-framework": "5.3.*",
         "vlucas/phpdotenv": "~2.2",
-        "wildside/userstamps": "^0.2.0",
         "tymon/jwt-auth": "1.0.0-alpha.3",
-        "silber/bouncer": "1.0.0-beta.1"
+        "silber/bouncer": "1.0.0-beta.1",
+        "wildside/userstamps": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -34,5 +34,28 @@
         ]
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+    {
+        "type": "package",
+        "package": {
+            "name": "wildside/userstamps",
+            "version": "dev-master",
+            "source": {
+                "url": "git://github.com/glyphco/Laravel-Userstamps.git",
+                "type": "git",
+                "reference": "master"
+            },
+            "autoload": {
+                "psr-4" : {
+                    "Wildside\\Userstamps\\" : "src"
+                }
+            }
+        }
+    }
+    ],
+      
+    "config":{
+        "secure-http":false
+    }
 }
