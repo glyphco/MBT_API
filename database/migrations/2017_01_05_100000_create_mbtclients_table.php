@@ -25,7 +25,7 @@ class CreateMbtclientsTable extends Migration {
 		});
 
 		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-		$datetime = Carbon::now();
+		$datetime = \Carbon\Carbon::now();
 
 		$clients = [
 			[
