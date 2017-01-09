@@ -40,12 +40,13 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
 //admin only
 	$app->group(['middleware' => 'can:create-events'], function () use ($app) {
-		rest('/event', 'EventController');
+
 	});
 
 //rest('/user', 'UserController');
 
 //contribute only
+	rest('/event', 'EventController');
 	rest('/venue', 'VenueController');
 	rest('/participant', 'ParticipantController'); //connect profiles to events
 	//members only
