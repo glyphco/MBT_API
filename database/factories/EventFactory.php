@@ -11,7 +11,7 @@ $factory->define('App\Models\Event', function (Faker\Generator $faker) {
 
 	return [
 		'name'           => $faker->company,
-		'venue'          => $faker->company,
+		'venue_name'     => $faker->company,
 		'street_address' => $faker->streetAddress,
 		'city'           => $faker->city,
 		'state'          => $faker->state,

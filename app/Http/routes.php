@@ -15,6 +15,10 @@ $app->get('/', function () use ($app) {
 	return $app->version();
 });
 
+$app->get('/refresh-token', function (Request $request) use ($app) {
+	return $request;
+});
+
 $app->get('/foo', function () use ($app) {
 	return 'bar';
 });
@@ -48,6 +52,7 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 //contribute only
 	rest('/event', 'EventController');
 	rest('/venue', 'VenueController');
+	rest('/profile', 'ProfileController');
 	rest('/participant', 'ParticipantController'); //connect profiles to events
 	//members only
 
@@ -61,7 +66,7 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 	});
 
 	$app->get('/userinfo', 'UserinfoController@userinfo');
-
+	$app->get('/me', 'UserinfoController@userinfo');
 //SPECIAL STUFF
 
 	$app->get('/runaccess', function () use ($app) {

@@ -15,5 +15,6 @@ class AppServiceProvider extends ServiceProvider {
 		$this->app->register(\Silber\Bouncer\BouncerServiceProvider::class);
 
 		class_alias('Silber\Bouncer\BouncerFacade', 'Bouncer');
+		//class_alias('\Tymon\JWTAuth\Facades\JWTAuth', 'JWTAuth');
 	}
 }

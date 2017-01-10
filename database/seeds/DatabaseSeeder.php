@@ -46,6 +46,7 @@ class UserDataSeeder extends Seeder {
 		$user = User::find($id);
 		//Logging in glypher so we can do all the seeding
 		\Auth::login($user);
+		Bouncer::assign('superadmin')->to(\Auth::user());
 
 		$users = factory('App\Models\User', 'user', 100)->create();
 
