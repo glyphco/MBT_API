@@ -15,26 +15,27 @@ $app->get('/', function () use ($app) {
 	return $app->version();
 });
 
-$app->get('/refresh-token', function (Request $request) use ($app) {
-	return $request;
-});
+// AUTH only for now (might change)
+// $app->get('/refresh-token', function (Request $request) use ($app) {
+// 	return $request;
+// });
 
 $app->get('/venue/map', 'VenueController@map');
 
-$app->get('/event', 'EventController@index');
-$app->get('/event/{id}', 'EventController@show');
-
-$app->get('/venue', 'VenueController@index');
-$app->get('/venue/{id}', 'VenueController@show');
-
-$app->get('/profile', 'ProfileController@index');
-$app->get('/profile/{id}', 'ProfileController@show');
-
-$app->get('/participant', 'ParticipantController@index');
-$app->get('/participant/{id}', 'ParticipantController@show');
-
 //ONLY Tokened Visitors beyond this point!
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
+
+	$app->get('/event', 'EventController@index');
+	$app->get('/event/{id}', 'EventController@show');
+
+	$app->get('/venue', 'VenueController@index');
+	$app->get('/venue/{id}', 'VenueController@show');
+
+	$app->get('/profile', 'ProfileController@index');
+	$app->get('/profile/{id}', 'ProfileController@show');
+
+	$app->get('/participant', 'ParticipantController@index');
+	$app->get('/participant/{id}', 'ParticipantController@show');
 
 //superadmin only
 	$app->group(['middleware' => 'can:view-users'], function () use ($app) {
@@ -45,6 +46,11 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 //admin only
 	$app->group(['middleware' => 'can:create-events'], function () use ($app) {
 
+	});
+
+	$app->group(['middleware' => 'can:edit-events'], function () use ($app) {
+		$app->get('/maintenance/unlinkedvenues', 'MaintenanceController@unlinkedVenues');
+		$app->get('/maintenance/unlinkedparticipants', 'MaintenanceController@unlinkedParticipants');
 	});
 
 //contribute only
