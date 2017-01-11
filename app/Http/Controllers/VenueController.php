@@ -22,6 +22,16 @@ class VenueController extends BaseController {
 		'zipcode'        => 'required',
 	];
 
+	public function index(Request $request) {
+		$m = self::MODEL;
+		//$data = $m;
+
+		$data = $m::get();
+
+		return $this->listResponse($data);
+
+	}
+
 	public function map(Request $request) {
 		$location          = $request->input('l', '41.291824,-87.763978');
 		$distanceinmeters  = $request->input('d', 100000); //(in meters)

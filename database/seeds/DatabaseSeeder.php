@@ -83,6 +83,13 @@ class EventDataSeeder extends Seeder {
 
 class RolesSeeder extends Seeder {
 	public function run() {
+
+		//Bouncer::allow(\Auth::user())->to('ban-users');
+		//Bouncer::allow('admin')->to('ban-users');
+		//Bouncer::assign('admin')->to(\Auth::user());
+
+		Bouncer::allow('superadmin')->to('view-users');
+		Bouncer::allow('superadmin')->to('edit-users');
 		Bouncer::allow('superadmin')->to('ban-users');
 		Bouncer::allow('superadmin')->to('create-profiles');
 		Bouncer::allow('superadmin')->to('edit-profiles');
@@ -94,6 +101,8 @@ class RolesSeeder extends Seeder {
 		Bouncer::allow('superadmin')->to('edit-events');
 		Bouncer::allow('superadmin')->to('delete-events');
 
+		Bouncer::allow('admin')->to('view-users');
+		Bouncer::allow('admin')->to('edit-users');
 		Bouncer::allow('admin')->to('create-profiles');
 		Bouncer::allow('admin')->to('edit-profiles');
 		Bouncer::allow('admin')->to('delete-profiles');

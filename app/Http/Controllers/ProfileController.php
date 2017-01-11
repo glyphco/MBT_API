@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Traits\APIResponderTrait;
 use App\Traits\RestControllerTrait;
+use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class ProfileController extends BaseController {
@@ -15,7 +16,14 @@ class ProfileController extends BaseController {
 		'city'     => 'required',
 		'state'    => 'required',
 		'zipcode'  => 'required',
-
 	];
+
+	public function index(Request $request) {
+		$m    = self::MODEL;
+		$data = $m::get();
+
+		return $this->listResponse($data);
+
+	}
 
 }

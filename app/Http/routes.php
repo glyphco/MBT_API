@@ -19,27 +19,27 @@ $app->get('/refresh-token', function (Request $request) use ($app) {
 	return $request;
 });
 
-$app->get('/foo', function () use ($app) {
-	return 'bar';
-});
-
 $app->get('/venue/map', 'VenueController@map');
 
-function rest($path, $controller) {
-	global $app;
+$app->get('/event', 'EventController@index');
+$app->get('/event/{id}', 'EventController@show');
 
-	$app->get($path, $controller . '@index');
-	$app->get($path . '/{id}', $controller . '@show');
-	$app->post($path, $controller . '@store');
-	$app->put($path . '/{id}', $controller . '@update');
-	$app->delete($path . '/{id}', $controller . '@destroy');
-}
+$app->get('/venue', 'VenueController@index');
+$app->get('/venue/{id}', 'VenueController@show');
 
+$app->get('/profile', 'ProfileController@index');
+$app->get('/profile/{id}', 'ProfileController@show');
+
+$app->get('/participant', 'ParticipantController@index');
+$app->get('/participant/{id}', 'ParticipantController@show');
+
+//ONLY Tokened Visitors beyond this point!
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
 //superadmin only
-	$app->group(['middleware' => 'can:ban-users'], function () use ($app) {
-		rest('/user', 'UserController');
+	$app->group(['middleware' => 'can:view-users'], function () use ($app) {
+		$app->get('/user', 'UserController@index');
+		$app->get('/user/{id}', 'UserController@show');
 	});
 
 //admin only
@@ -47,13 +47,8 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
 	});
 
-//rest('/user', 'UserController');
-
 //contribute only
-	rest('/event', 'EventController');
-	rest('/venue', 'VenueController');
-	rest('/profile', 'ProfileController');
-	rest('/participant', 'ParticipantController'); //connect profiles to events
+	//connect profiles to events
 	//members only
 
 //guests
@@ -70,10 +65,9 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 //SPECIAL STUFF
 
 	$app->get('/runaccess', function () use ($app) {
-		//Bouncer::allow(\Auth::user())->to('ban-users');
-		//Bouncer::allow('admin')->to('ban-users');
-		//Bouncer::assign('admin')->to(\Auth::user());
-
+		//Artisan::call('db:Seed --class=RolesSeeder');
+		Bouncer::allow('superadmin')->to('view-users');
+		Bouncer::allow('superadmin')->to('edit-users');
 		Bouncer::allow('superadmin')->to('ban-users');
 		Bouncer::allow('superadmin')->to('create-profiles');
 		Bouncer::allow('superadmin')->to('edit-profiles');
@@ -85,6 +79,8 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 		Bouncer::allow('superadmin')->to('edit-events');
 		Bouncer::allow('superadmin')->to('delete-events');
 
+		Bouncer::allow('admin')->to('view-users');
+		Bouncer::allow('admin')->to('edit-users');
 		Bouncer::allow('admin')->to('create-profiles');
 		Bouncer::allow('admin')->to('edit-profiles');
 		Bouncer::allow('admin')->to('delete-profiles');
@@ -104,13 +100,10 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 		Bouncer::allow('mastereditor')->to('create-events');
 		Bouncer::allow('mastereditor')->to('edit-events');
 		Bouncer::allow('mastereditor')->to('delete-events');
-
 		return 'roles seeded';
 	});
 
-	$app->get('/backstageaccess', function () use ($app) {
-		//Bouncer::allow(\Auth::user())->to('ban-users');
-		//Bouncer::allow('admin')->to('ban-users');
+	$app->get('/backstage', function () use ($app) {
 		Bouncer::assign('mastereditor')->to(\Auth::user());
 		return \Auth::user()->getAbilities()->toArray();
 	});
@@ -137,3 +130,13 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 //     $app->
 //     });
 // });
+
+// function rest($path, $controller) {
+// 	global $app;
+
+// 	$app->get($path, $controller . '@index');
+// 	$app->get($path . '/{id}', $controller . '@show');
+// 	$app->post($path, $controller . '@store');
+// 	$app->put($path . '/{id}', $controller . '@update');
+// 	$app->delete($path . '/{id}', $controller . '@destroy');
+// }
