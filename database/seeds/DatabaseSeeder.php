@@ -32,15 +32,24 @@ class UserDataSeeder extends Seeder {
 	public function run() {
 		DB::table('users')->delete();
 		$datetime    = Carbon::now();
+		$lat         = '41.94';
+		$lng         = '-87.67';
+		$latlngval   = $lat . ', ' . $lng;
 		$glypherinfo = [
 			'name'        => "Shawn 'glypher' Dalton",
+			'username'    => "glypher",
 			'email'       => "glypher@gmail.com",
 			'facebook_id' => '10109892803653991',
 			'avatar'      => 'https://graph.facebook.com/v2.8/10109892803653991/picture?type=normal',
-			'slug'        => 'shawn',
+			'lat'         => $lat,
+			'lng'         => $lng,
+			'location'    => DB::raw("POINT($latlngval)"),
+			'confirmed'   => '1',
+			'slug'        => 'glypher',
 			'created_at'  => $datetime,
 			'updated_at'  => $datetime,
 		];
+		//NOTE LOCATION is POINT (since we're not using model, but raw DB entry)
 
 		$id   = DB::table('users')->insertGetId($glypherinfo);
 		$user = User::find($id);

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Traits\SpacialdataTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -18,7 +19,7 @@ class User extends Model implements
 AuthenticatableContract,
 AuthenticatableUserContract,
 AuthorizableContract {
-	use Authenticatable, Authorizable, HasRolesAndAbilities;
+	use Authenticatable, Authorizable, HasRolesAndAbilities, SpacialdataTrait;
 	//use Notifiable;
 	/**
 	 * The attributes that are mass assignable.
@@ -27,6 +28,13 @@ AuthorizableContract {
 	 */
 	protected $fillable = [
 		'name', 'avatar', 'slug', 'confirmed', 'is_banned', 'banned_until', 'last_active_desc', 'last_active', 'is_online', 'remember_token',
+		'street_address',
+		'city',
+		'state',
+		'zipcode',
+		'lat',
+		'lng',
+		'location',
 	];
 
 	/**
