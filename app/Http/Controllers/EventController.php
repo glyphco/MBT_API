@@ -58,7 +58,8 @@ class EventController extends BaseController {
 		if ($date) {
 			$data = $data->InDateRange($date, $enddate);
 		}
-		if ($request->has('current')) {
+
+		if ($request->exists('current')) {
 			$data = $data->Current();
 		}
 		if ($request->has('v')) {

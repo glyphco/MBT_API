@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
@@ -127,9 +128,9 @@ class Event extends Model {
 		});
 	}
 
-	public function scopeCurrent($filter, $date) {
+	public function scopeCurrent($filter) {
 
-		return $filter->where(function ($query) use ($date) {
+		return $filter->where(function ($query) {
 			$query
 			//Start in date range
 			->whereDate('start', '>=', Carbon::now()->subHours(5)->toDateString())
