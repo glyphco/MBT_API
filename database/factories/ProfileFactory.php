@@ -18,7 +18,7 @@ $factory->define('App\Models\Profile', function (Faker\Generator $faker) {
         'street_address' => $faker->streetAddress,
         'city'           => $faker->city,
         'state'          => $faker->state,
-        'zipcode'        => $faker->postcode,
+        'postalcode'     => $faker->postcode,
         'lat'            => $lat,
         'lng'            => $lng,
         'phone'          => $faker->phoneNumber,

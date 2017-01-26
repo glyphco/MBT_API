@@ -24,15 +24,17 @@ class CreateVenuesTable extends Migration
             $table->string('street_address');
             $table->string('city');
             $table->string('state');
-            $table->string('zipcode');
+            $table->string('postalcode');
 
             $table->decimal('lat', 10, 8);
             $table->decimal('lng', 11, 8);
 
-            $table->string('phone');
-            $table->string('email');
-            $table->string('imageurl');
-            $table->string('backgroundurl');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('tagline', 50)->nullable();
+            $table->text('description')->nullable();
+            $table->string('imageurl')->nullable();
+            $table->string('backgroundurl')->nullable();
 
             $table->boolean('public')->default(0);
             $table->boolean('confirmed')->default(0);

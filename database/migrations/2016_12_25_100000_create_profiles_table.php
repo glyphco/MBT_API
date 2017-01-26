@@ -24,7 +24,7 @@ class CreateProfilesTable extends Migration
             $table->string('street_address')->nullable()->default(null);
             $table->string('city')->nullable()->default(null);
             $table->string('state')->nullable()->default(null);
-            $table->string('zipcode')->nullable()->default(null);
+            $table->string('postalcode')->nullable()->default(null);
             $table->string('lat')->nullable()->default(null);
             $table->string('lng')->nullable()->default(null);
             $table->string('phone')->nullable()->default(null);
@@ -36,8 +36,10 @@ class CreateProfilesTable extends Migration
             $table->boolean('public')->default(0);
             $table->boolean('confirmed')->default(0);
 
-            $table->string('imageurl');
-            $table->string('backgroundurl');
+            $table->string('tagline', 50)->nullable();
+            $table->text('description')->nullable();
+            $table->string('imageurl')->nullable();
+            $table->string('backgroundurl')->nullable();
 
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable()->default(null);
