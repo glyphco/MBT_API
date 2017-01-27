@@ -31,6 +31,8 @@ class Event extends Model
         'end',
         'public',
         'confirmed',
+        'imageurl',
+        'backgroundurl',
     ];
 
     /**

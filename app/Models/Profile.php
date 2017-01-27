@@ -32,6 +32,8 @@ class Profile extends Model
         'canbeamember',
         'public',
         'confirmed',
+        'imageurl',
+        'backgroundurl',
     ];
 
     /**
@@ -45,6 +47,16 @@ class Profile extends Model
     public function events()
     {
         return $this->belongsToMany('App\Models\Event', 'participant', 'profile_id', 'event_id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\Models\Profile', 'groupmembers', 'member_id', 'group_id');
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany('App\Models\Profile', 'groupmembers', 'group_id', 'member_id');
     }
 
 }

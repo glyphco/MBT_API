@@ -36,6 +36,8 @@ AuthorizableContract
         'lat',
         'lng',
         'location',
+        'imageurl',
+        'backgroundurl',
     ];
 
     /**
