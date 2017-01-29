@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Scopes\ConfirmedScope;
+use App\Scopes\PublicScope;
 use App\Traits\SpacialdataTrait;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
@@ -9,6 +11,7 @@ class Venue extends Model
 {
     use Userstamps;
     use SpacialdataTrait;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,8 +48,8 @@ class Venue extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new \App\Scopes\PublicScope);
-        static::addGlobalScope(new \App\Scopes\ConfirmedScope);
+        //static::addGlobalScope(new PublicScope);
+        static::addGlobalScope(new ConfirmedScope);
     }
 
     public function events()
@@ -67,6 +70,7 @@ class Venue extends Model
     {
         return $query->withoutGlobalScope(ConfirmedScope::class)->where('confirmed', '=', 0);
     }
+
     public function scopeConfirmedAndUnconfirmed($query)
     {
         return $query->withoutGlobalScope(ConfirmedScope::class);

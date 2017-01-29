@@ -20,7 +20,7 @@ $app->get('/', function () use ($app) {
 //     return $request;
 // });
 
-$app->get('/venue/map', 'VenueController@map');
+//$app->get('/venue/map', 'VenueController@map');
 
 //ONLY Tokened Visitors beyond this point!
 $app->group(['middleware' => 'auth:api'], function () use ($app) {
@@ -30,6 +30,26 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
     $app->get('/venue', 'VenueController@index');
     $app->get('/venue/{id}', 'VenueController@show');
+    $app->group(['middleware' => 'can:create-venues'], function () use ($app) {
+        $app->post('/venue', 'VenueController@store');
+    });
+    $app->group(['middleware' => 'can:confirm-venues'], function () use ($app) {
+        $app->get('/venue/{id}/confirm', 'VenueController@confirm');
+        $app->get('/venue/{id}/unconfirm', 'VenueController@unconfirm');
+    });
+    $app->group(['middleware' => 'can:edit-venues'], function () use ($app) {
+        $app->put('/venue/{id}', 'VenueController@update');
+        // checks made in controller:
+        $app->get('/venue/{id}/giveedit/{userid}', 'VenueController@giveedit');
+        $app->get('/venue/{id}/revokeedit/{userid}', 'VenueController@revokeedit');
+        $app->get('/venue/{id}/giveadmin/{userid}', 'VenueController@giveadmin');
+        $app->get('/venue/{id}/revokeadmin/{userid}', 'VenueController@revokeadmin');
+        $app->get('/venue/{id}/editors', 'VenueController@geteditors');
+        $app->get('/venue/{id}/admins', 'VenueController@getadmins');
+    });
+    $app->group(['middleware' => 'can:delete-venues'], function () use ($app) {
+        $app->delete('/venue/{id}', 'VenueController@update');
+    });
 
     $app->get('/profile', 'ProfileController@index');
     $app->get('/profile/{id}', 'ProfileController@show');
@@ -44,9 +64,6 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
     });
 
 //admin only
-    $app->group(['middleware' => 'can:create-venues'], function () use ($app) {
-        $app->post('/venue', 'VenueController@store');
-    });
 
 //admin only
     $app->group(['middleware' => 'can:delete-venues'], function () use ($app) {
@@ -77,12 +94,15 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
 
     $app->get('/runaccess', function () use ($app) {
         //Artisan::call('db:Seed --class=RolesSeeder');
-        Bouncer::allow('superadmin')->to('view-users');
-        Bouncer::allow('superadmin')->to('edit-users');
-        Bouncer::allow('superadmin')->to('ban-users');
+        Bouncer::allow('superadmin')->to('view-users'); // sa only
+        Bouncer::allow('superadmin')->to('edit-users'); // sa only
+        Bouncer::allow('superadmin')->to('ban-users'); // sa only
+        Bouncer::allow('superadmin')->to('admin-profiles'); // sa/a only
+        Bouncer::allow('superadmin')->to('confirm-profiles');
         Bouncer::allow('superadmin')->to('create-profiles');
         Bouncer::allow('superadmin')->to('edit-profiles');
         Bouncer::allow('superadmin')->to('delete-profiles');
+        Bouncer::allow('superadmin')->to('admin-venues');
         Bouncer::allow('superadmin')->to('confirm-venues');
         Bouncer::allow('superadmin')->to('create-venues');
         Bouncer::allow('superadmin')->to('edit-venues');
@@ -91,11 +111,14 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
         Bouncer::allow('superadmin')->to('edit-events');
         Bouncer::allow('superadmin')->to('delete-events');
 
+        Bouncer::allow('admin')->to('admin-profiles'); // sa/a only
+        Bouncer::allow('admin')->to('confirm-profiles');
         Bouncer::allow('admin')->to('view-users');
         Bouncer::allow('admin')->to('edit-users');
         Bouncer::allow('admin')->to('create-profiles');
         Bouncer::allow('admin')->to('edit-profiles');
         Bouncer::allow('admin')->to('delete-profiles');
+        Bouncer::allow('admin')->to('admin-venues');
         Bouncer::allow('admin')->to('confirm-venues');
         Bouncer::allow('admin')->to('create-venues');
         Bouncer::allow('admin')->to('edit-venues');
@@ -104,9 +127,11 @@ $app->group(['middleware' => 'auth:api'], function () use ($app) {
         Bouncer::allow('admin')->to('edit-events');
         Bouncer::allow('admin')->to('delete-events');
 
+        Bouncer::allow('mastereditor')->to('confirm-profiles');
         Bouncer::allow('mastereditor')->to('create-profiles');
         Bouncer::allow('mastereditor')->to('edit-profiles');
         Bouncer::allow('mastereditor')->to('delete-profiles');
+        Bouncer::allow('mastereditor')->to('admin-venues');
         Bouncer::allow('mastereditor')->to('confirm-venues');
         Bouncer::allow('mastereditor')->to('create-venues');
         Bouncer::allow('mastereditor')->to('edit-venues');

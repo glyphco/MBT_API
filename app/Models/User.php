@@ -69,4 +69,23 @@ AuthorizableContract
         return [];
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $ability
+     */
+    public function scopeWhereCan($query, $ability)
+    {
+        $query->where(function ($query) use ($ability) {
+            // direct
+            $query->whereHas('abilities', function ($query) use ($ability) {
+                $query->byName($ability);
+            });
+            // through roles
+            $query->orWhereHas('roles', function ($query) use ($ability) {
+                $query->whereHas('abilities', function ($query) use ($ability) {
+                    $query->byName($ability);
+                });
+            });
+        });
+    }
 }

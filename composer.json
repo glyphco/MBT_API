@@ -10,7 +10,8 @@
         "vlucas/phpdotenv": "~2.2",
         "tymon/jwt-auth": "1.0.0-alpha.3",
         "silber/bouncer": "1.0.0-beta.1",
-        "wildside/userstamps": "dev-master"
+        "wildside/userstamps": "dev-master",
+        "appzcoder/lumen-routes-list": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

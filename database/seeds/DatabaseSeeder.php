@@ -109,12 +109,15 @@ class RolesSeeder extends Seeder
         //Bouncer::allow('admin')->to('ban-users');
         //Bouncer::assign('admin')->to(\Auth::user());
 
-        Bouncer::allow('superadmin')->to('view-users');
-        Bouncer::allow('superadmin')->to('edit-users');
-        Bouncer::allow('superadmin')->to('ban-users');
+        Bouncer::allow('superadmin')->to('view-users'); // sa only
+        Bouncer::allow('superadmin')->to('edit-users'); // sa only
+        Bouncer::allow('superadmin')->to('ban-users'); // sa only
+        Bouncer::allow('superadmin')->to('admin-profiles'); // sa/a only
+        Bouncer::allow('superadmin')->to('confirm-profiles');
         Bouncer::allow('superadmin')->to('create-profiles');
         Bouncer::allow('superadmin')->to('edit-profiles');
         Bouncer::allow('superadmin')->to('delete-profiles');
+        Bouncer::allow('superadmin')->to('admin-venues');
         Bouncer::allow('superadmin')->to('confirm-venues');
         Bouncer::allow('superadmin')->to('create-venues');
         Bouncer::allow('superadmin')->to('edit-venues');
@@ -123,11 +126,14 @@ class RolesSeeder extends Seeder
         Bouncer::allow('superadmin')->to('edit-events');
         Bouncer::allow('superadmin')->to('delete-events');
 
+        Bouncer::allow('admin')->to('admin-profiles'); // sa/a only
+        Bouncer::allow('admin')->to('confirm-profiles');
         Bouncer::allow('admin')->to('view-users');
         Bouncer::allow('admin')->to('edit-users');
         Bouncer::allow('admin')->to('create-profiles');
         Bouncer::allow('admin')->to('edit-profiles');
         Bouncer::allow('admin')->to('delete-profiles');
+        Bouncer::allow('admin')->to('admin-venues');
         Bouncer::allow('admin')->to('confirm-venues');
         Bouncer::allow('admin')->to('create-venues');
         Bouncer::allow('admin')->to('edit-venues');
@@ -136,9 +142,11 @@ class RolesSeeder extends Seeder
         Bouncer::allow('admin')->to('edit-events');
         Bouncer::allow('admin')->to('delete-events');
 
+        Bouncer::allow('mastereditor')->to('confirm-profiles');
         Bouncer::allow('mastereditor')->to('create-profiles');
         Bouncer::allow('mastereditor')->to('edit-profiles');
         Bouncer::allow('mastereditor')->to('delete-profiles');
+        Bouncer::allow('mastereditor')->to('admin-venues');
         Bouncer::allow('mastereditor')->to('confirm-venues');
         Bouncer::allow('mastereditor')->to('create-venues');
         Bouncer::allow('mastereditor')->to('edit-venues');
