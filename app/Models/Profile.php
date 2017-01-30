@@ -1,13 +1,16 @@
 <?php
 namespace App\Models;
 
+use App\Scopes\ProfileConfirmedScope;
+use App\Scopes\ProfilePublicScope;
+use App\Traits\SpacialdataTrait;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
 class Profile extends Model
 {
     use Userstamps;
-    use \App\Traits\SpacialdataTrait;
+    use SpacialdataTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -44,9 +47,44 @@ class Profile extends Model
     protected $hidden = [
     ];
 
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new \App\Scopes\ProfilePublicScope);
+        static::addGlobalScope(new \App\Scopes\ProfileConfirmedScope);
+    }
+
     public function events()
     {
-        return $this->belongsToMany('App\Models\Event', 'participant', 'profile_id', 'event_id');
+        //return $this->hasMany('App\Models\Event');
+        return $this->hasManyThrough(
+            'App\Models\Event', 'App\Models\participant',
+            'profile_id', 'id'
+        );
+    }
+
+    public function scopePrivate($query)
+    {
+        return $query->withoutGlobalScope(\App\Scopes\ProfilePublicScope::class)->where('public', '=', 0);
+    }
+    public function scopePublicAndPrivate($query)
+    {
+        return $query->withoutGlobalScope(\App\Scopes\ProfilePublicScope::class);
+    }
+
+    public function scopeUnconfirmed($query)
+    {
+        return $query->withoutGlobalScope(\App\Scopes\ProfileConfirmedScope::class)->where('confirmed', '=', 0);
+    }
+
+    public function scopeConfirmedAndUnconfirmed($query)
+    {
+        return $query->withoutGlobalScope(\App\Scopes\ProfileConfirmedScope::class);
     }
 
     public function groups()

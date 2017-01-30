@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Scopes\ConfirmedScope;
-use App\Scopes\PublicScope;
+use App\Scopes\VenueConfirmedScope;
+use App\Scopes\VenuePublicScope;
 use App\Traits\SpacialdataTrait;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
@@ -48,8 +48,8 @@ class Venue extends Model
     protected static function boot()
     {
         parent::boot();
-        //static::addGlobalScope(new PublicScope);
-        static::addGlobalScope(new ConfirmedScope);
+        static::addGlobalScope(new \App\Scopes\VenuePublicScope);
+        static::addGlobalScope(new \App\Scopes\VenueConfirmedScope);
     }
 
     public function events()
@@ -57,23 +57,28 @@ class Venue extends Model
         return $this->hasMany('App\Models\Event');
     }
 
+    public function currentevents()
+    {
+        return $this->hasMany('App\Models\Event')->Current();
+    }
+
     public function scopePrivate($query)
     {
-        return $query->withoutGlobalScope(PublicScope::class)->where('public', '=', 0);
+        return $query->withoutGlobalScope(\App\Scopes\VenuePublicScope::class)->where('public', '=', 0);
     }
     public function scopePublicAndPrivate($query)
     {
-        return $query->withoutGlobalScope(PublicScope::class);
+        return $query->withoutGlobalScope(\App\Scopes\VenuePublicScope::class);
     }
 
     public function scopeUnconfirmed($query)
     {
-        return $query->withoutGlobalScope(ConfirmedScope::class)->where('confirmed', '=', 0);
+        return $query->withoutGlobalScope(\App\Scopes\VenueConfirmedScope::class)->where('confirmed', '=', 0);
     }
 
     public function scopeConfirmedAndUnconfirmed($query)
     {
-        return $query->withoutGlobalScope(ConfirmedScope::class);
+        return $query->withoutGlobalScope(\App\Scopes\VenueConfirmedScope::class);
     }
 
 }

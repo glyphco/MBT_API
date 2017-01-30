@@ -7,27 +7,53 @@ use Tymon\JWTAuth\JWTAuth as Auth;
 
 //use Tymon\JWTAuth\Facades\JWTAuth as JWTAuth;
 
-class UserinfoController extends BaseController {
+class UserinfoController extends BaseController
+{
 
-	public function __construct(
-		Auth $auth) {
-		$this->auth = $auth;
-	}
+    public function __construct(
+        Auth $auth) {
+        $this->auth = $auth;
+    }
 
-	use APIResponderTrait;
-	public function userinfo() {
-		$data               = $this->getUser();
-		$data['attributes'] = $this->getAttributes();
-		$data['token']      = app('request')->header('Authorization');
-		return $this->showResponse($data);
-	}
+    use APIResponderTrait;
+    public function userinfo()
+    {
+        $data               = $this->getUser();
+        $data['attributes'] = $this->getAttributes();
+        $data['token']      = app('request')->header('Authorization');
+        return $this->showResponse($data);
+    }
 
-	private function getUser() {
-		return \Auth::user()->toArray();
-	}
+    private function getUser()
+    {
+        return \Auth::user()->toArray();
+    }
 
-	private function getAttributes() {
-		return array_pluck(\Auth::user()->getAbilities()->toArray(), 'name');
-	}
+    private function getAttributes()
+    {
+
+        //return \Auth::user()->getAbilities()->toArray();
+        $attributes = \Auth::user()->getAbilities()->toArray();
+        if (empty($attributes)) {
+            return [];
+        }
+
+        $models = [
+            'App\Models\Venue'   => 'venue',
+            'App\Models\Profile' => 'profile',
+        ];
+        $modelattributes  = ['edit', 'administer'];
+        $returnattributes = [];
+        foreach ($attributes as $key => $attribute) {
+            if (in_array($attribute['name'], $modelattributes)) {
+
+                $returnattributes[$models[$attribute['entity_type']]][$attribute['id']][] = $attribute['name'];
+            } else {
+                $returnattributes[$attribute['name']] = null;
+            }
+        }
+        return $returnattributes;
+        //return array_pluck(\Auth::user()->getAbilities()->toArray(), ['name', 'entity_type', 'entity_id'], 'id');
+    }
 
 }

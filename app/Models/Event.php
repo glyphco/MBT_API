@@ -1,6 +1,9 @@
 <?php
 namespace App\Models;
 
+use App\Scopes\EventConfirmedScope;
+use App\Scopes\EventOrderStartScope;
+use App\Scopes\EventPublicScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
@@ -51,10 +54,11 @@ class Event extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new \App\Scopes\PublicScope);
-        static::addGlobalScope(new \App\Scopes\ConfirmedScope);
+        static::addGlobalScope(new \App\Scopes\EventPublicScope);
+        static::addGlobalScope(new \App\Scopes\EventConfirmedScope);
+        static::addGlobalScope(new \App\Scopes\EventOrderStartScope);
         static::addGlobalScope(new \App\Scopes\WithParticipantsScope);
-        static::addGlobalScope(new \App\Scopes\OrderStartScope);
+
     }
 
     /**
@@ -74,30 +78,30 @@ class Event extends Model
 
     public function scopePrivate($query)
     {
-        return $query->withoutGlobalScope(PublicScope::class)->where('public', '=', 0);
+        return $query->withoutGlobalScope(\App\Scopes\EventPublicScope::class)->where('public', '=', 0);
     }
     public function scopePublicAndPrivate($query)
     {
-        return $query->withoutGlobalScope(PublicScope::class);
+        return $query->withoutGlobalScope(\App\Scopes\EventPublicScope::class);
     }
 
     public function scopeUnconfirmed($query)
     {
-        return $query->withoutGlobalScope(ConfirmedScope::class)->where('confirmed', '=', 0);
+        return $query->withoutGlobalScope(\App\Scopes\EventConfirmedScope::class)->where('confirmed', '=', 0);
     }
     public function scopeConfirmedAndUnconfirmed($query)
     {
-        return $query->withoutGlobalScope(ConfirmedScope::class);
+        return $query->withoutGlobalScope(\App\Scopes\EventConfirmedScope::class);
     }
 
-    public function scopeNoVenue($query)
-    {
-        return $query->withoutGlobalScope(WithVenueScope::class);
-    }
+    // public function scopeNoVenue($query)
+    // {
+    //     return $query->withoutGlobalScope(WithVenueScope::class);
+    // }
 
     public function scopeNoParticipants($query)
     {
-        return $query->withoutGlobalScope(WithParticipantsScope::class);
+        return $query->withoutGlobalScope(\App\Scopes\WithParticipantsScope::class);
     }
 
     public function scopeAtVenue($filter, $venue_id)

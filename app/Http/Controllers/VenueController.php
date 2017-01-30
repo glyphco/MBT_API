@@ -27,24 +27,13 @@ class VenueController extends BaseController
         'lng'            => 'required',
     ];
 
-// **on creation: **
-    // make: user -> administer(id)
-    // make: user -> edit(id).
-    // **give/take edit**
-    // check: user ->administer(id) or edit-venues
-    // **on edit:**
-    // check: user ->administer(id) or  edit(id) or edit-venues
-    // **make public**
-    // check: user -> administer(id) or  edit(id) or edit-venues
-    // **confirm**
-    // check: user -> confirm-venues
-
     public function index(Request $request)
     {
         $m = self::MODEL;
         //$data = $m;
 
-        $data = $m::withCount('events');
+        $data = $m::withCount(['currentevents', 'events']);
+        //$data = $data->with('currentevents');
 
         if ($request->exists('Unconfirmed')) {
             $data = $data->Unconfirmed();
@@ -103,14 +92,13 @@ class VenueController extends BaseController
     {
         $m = self::MODEL;
 
-        $data = $m::withCount('events')->find($id);
+        $data = $m::withCount(['currentevents', 'events'])->find($id);
 
-        if ($request->exists('User')) {
-            $ability   = 'view-users';
-            $arguments = '';
-            $users     = User::WhereCan('edit', $data)->get();
-            return $this->showResponse($users);
-        }
+        // if ($request->exists('User')) {
+        //     $edit       = User::WhereCan('edit', $data)->get();
+        //     $administer = User::WhereCan('administer', $data)->get();
+        //     return $this->showResponse(['edit' => $edit, 'administer' => $administer]);
+        // }
 
         if ($request->exists('Unconfirmed')) {
             $data = $data->Unconfirmed();
@@ -194,16 +182,13 @@ class VenueController extends BaseController
             return $this->notFoundResponse();
         }
 
+        if (!(Bouncer::allows('confirm-venues'))) {
+            return $this->unauthorizedResponse();
+        }
+
         try
         {
-            $input = ["confirmed" => 1];
-
-            // BUT if a user cant set confirmed, strip it:
-            if (!(Bouncer::allows('confirm-venue'))) {
-                $input = $request->except(['confirmed']);
-            }
-
-            $data->fill($input);
+            $data->confirmed = 1;
             $data->save();
             return $this->showResponse($data);
         } catch (\Exception $ex) {
@@ -220,16 +205,13 @@ class VenueController extends BaseController
             return $this->notFoundResponse();
         }
 
+        if (!(Bouncer::allows('confirm-venues'))) {
+            return $this->unauthorizedResponse();
+        }
+
         try
         {
-            $input = ["confirmed" => 0];
-
-            // BUT if a user cant set confirmed, strip it:
-            if (!(Bouncer::allows('confirm-venue'))) {
-                $input = $request->except(['confirmed']);
-            }
-
-            $data->fill($input);
+            $data->confirmed = 0;
             $data->save();
             return $this->showResponse($data);
         } catch (\Exception $ex) {

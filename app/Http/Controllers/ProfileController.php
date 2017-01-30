@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Traits\APIResponderTrait;
 use App\Traits\RestControllerTrait;
 use Illuminate\Http\Request;
@@ -27,7 +28,22 @@ class ProfileController extends BaseController
     public function index(Request $request)
     {
         $m    = self::MODEL;
-        $data = $m::get();
+        $data = $m::withCount('events');
+
+        if ($request->exists('Unconfirmed')) {
+            $data = $data->Unconfirmed();
+        }
+        if ($request->exists('ConfirmedAndUnconfirmed')) {
+            $data = $data->ConfirmedAndUnconfirmed();
+        }
+        if ($request->exists('Private')) {
+            $data = $data->Private();
+        }
+        if ($request->exists('PublicAndPrivate')) {
+            $data = $data->PublicAndPrivate();
+        }
+        $data = $data->get();
+
         return $this->listResponse($data);
     }
 
@@ -64,7 +80,7 @@ class ProfileController extends BaseController
     public function show($id)
     {
         $m = self::MODEL;
-        if ($data = $m::with('groups')->with('members')->where('id', '=', $id)->get()) {
+        if ($data = $m::with('groups')->with('members')->find($id)) {
             return $this->showResponse($data);
         }
         return $this->notFoundResponse();
@@ -115,6 +131,144 @@ class ProfileController extends BaseController
         }
         $data->delete();
         return $this->deletedResponse();
+    }
+
+    public function confirm($id)
+    {
+        $m = self::MODEL;
+
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+
+        if (!(Bouncer::allows('confirm-profiles'))) {
+            return $this->unauthorizedResponse();
+        }
+
+        try
+        {
+            $data->confirmed = 1;
+            $data->save();
+            return $this->showResponse($data);
+        } catch (\Exception $ex) {
+            $data = ['form_validations' => $v->errors(), 'exception' => $ex->getMessage()];
+            return $this->clientErrorResponse($data);
+        }
+
+    }
+    public function unconfirm($id)
+    {
+        $m = self::MODEL;
+
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+
+        if (!(Bouncer::allows('confirm-profiles'))) {
+            return $this->unauthorizedResponse();
+        }
+
+        try
+        {
+            $data->confirmed = 0;
+            $data->save();
+            return $this->showResponse($data);
+        } catch (\Exception $ex) {
+            $data = ['form_validations' => $v->errors(), 'exception' => $ex->getMessage()];
+            return $this->clientErrorResponse($data);
+        }
+    }
+
+    public function giveedit(Request $request, $id, $userid)
+    {
+        $m = self::MODEL;
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+        if (!$otheruser = User::find($userid)) {
+            return $this->notFoundResponse();
+        }
+        if ((Bouncer::allows('admin-profiles')) or (Bouncer::allows('administer', $data))) {
+            Bouncer::allow($otheruser)->to('edit', $data);
+            return $this->showResponse('');
+        }
+        return $this->unauthorizedResponse();
+    }
+
+    public function revokeedit(Request $request, $id, $userid)
+    {
+        $m = self::MODEL;
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+        if (!$otheruser = User::find($userid)) {
+            return $this->notFoundResponse();
+        }
+        if ((Bouncer::allows('admin-profiles')) or (Bouncer::allows('administer', $data))) {
+            Bouncer::disallow($otheruser)->to('edit', $data);
+            return $this->showResponse('');
+        }
+        return $this->unauthorizedResponse();
+    }
+
+    public function giveadmin(Request $request, $id, $userid)
+    {
+        $m = self::MODEL;
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+        if (!$otheruser = User::find($userid)) {
+            return $this->notFoundResponse();
+        }
+        if ((Bouncer::allows('admin-profiles')) or (Bouncer::allows('administer', $data))) {
+            Bouncer::allow($otheruser)->to('administer', $data);
+            return $this->showResponse('');
+        }
+        return $this->unauthorizedResponse();
+    }
+
+    public function revokeadmin(Request $request, $id, $userid)
+    {
+        $m = self::MODEL;
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+        if (!$otheruser = User::find($userid)) {
+            return $this->notFoundResponse();
+        }
+        if ((Bouncer::allows('admin-profiles')) or (Bouncer::allows('administer', $data))) {
+            Bouncer::disallow($otheruser)->to('administer', $data);
+            return $this->showResponse('');
+        }
+        return $this->unauthorizedResponse();
+    }
+
+    public function getEditors(Request $request, $id)
+    {
+        $m = self::MODEL;
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+
+        if ((Bouncer::allows('admin-profiles')) or (Bouncer::allows('administer', $data))) {
+            $users = User::WhereCan('edit', $data)->select('id', 'name', 'avatar')->get();
+            return $this->showResponse($users);
+        }
+        return $this->unauthorizedResponse();
+    }
+
+    public function getAdmins(Request $request, $id)
+    {
+        $m = self::MODEL;
+        if (!$data = $m::PublicAndPrivate()->ConfirmedAndUnconfirmed()->find($id)) {
+            return $this->notFoundResponse();
+        }
+
+        if ((Bouncer::allows('admin-profiles')) or (Bouncer::allows('administer', $data))) {
+            $users = User::WhereCan('administer', $data)->select('id', 'name', 'avatar')->get();
+            return $this->showResponse($users);
+        }
+        return $this->unauthorizedResponse();
     }
 
 }
