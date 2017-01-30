@@ -47,9 +47,9 @@ class UserinfoController extends BaseController
         foreach ($attributes as $key => $attribute) {
             if (in_array($attribute['name'], $modelattributes)) {
 
-                $returnattributes[$models[$attribute['entity_type']]][$attribute['id']][] = $attribute['name'];
+                $returnattributes[$models[$attribute['entity_type']]][$attribute['id']][$attribute['name']] = 1;
             } else {
-                $returnattributes[$attribute['name']] = null;
+                $returnattributes[$attribute['name']] = 1;
             }
         }
         return $returnattributes;
